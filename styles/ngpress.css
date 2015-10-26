@@ -1,0 +1,13 @@
+/* line 3, ngpress.scss */
+.site-content {
+  position: relative;
+  min-height: 200px; }
+
+/* line 8, ngpress.scss */
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7) url("../img/ajax-loader.gif") no-repeat center; }
