@@ -3,11 +3,13 @@
     angular.module('ngpress').factory('postsService',
         ['$http', function ($http)
         {
-            const URL = WP_API_Settings.root + '/posts';
+            const WP_API_URL = '/wp-json/wp/v2/posts';
+
+            const NGP_API_URL = '/wp-json/ngpress/v1/url-to-content';
 
             return {
 
-                load: function( filter, callback )
+                loadByParams: function( filter, callback, failure )
                 {
                     filter['type'] = 'type' in filter ? filter['type'] : 'any';
 
@@ -18,7 +20,16 @@
                         config.params['filter['+key+']'] = value;
                     });
 
-                    $http.get( URL, config ).then( callback );
+                    $http.get( WP_API_URL, config ).then( callback, failure );
+                },
+
+                loadByPath: function( path, callback, failure )
+                {
+                    var config = {
+                        params: { path: path }
+                    };
+
+                    $http.get( NGP_API_URL, config ).then( callback, failure );
                 }
             }
         }]);

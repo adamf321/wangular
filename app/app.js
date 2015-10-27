@@ -6,17 +6,21 @@ var app = angular.module('ngpress', [], function($locationProvider)
 app.run( ['$rootScope', 'postsService', '$location',
     function($rootScope, postsService, $location)
 {
-    $rootScope.loadPosts = function( filter )
+    $rootScope.loadPosts = function( path )
     {
         $rootScope.$broadcast( 'loadingPosts' );
 
-        $location.path( filter.name );
+        $location.path( path );
 
-        postsService.load(
-            filter,
+        postsService.loadByPath(
+            path,
             function( response )
             {
                 $rootScope.$broadcast( 'postsLoaded', response.data );
+            },
+            function()
+            {
+                $rootScope.$broadcast( 'postsLoadFailed', null );
             }
         );
     };
@@ -28,7 +32,7 @@ app.run( ['$rootScope', 'postsService', '$location',
 
     angular.element(document).ready(function()
     {
-        $rootScope.loadPosts( {name: $location.path()} );
+        $rootScope.loadPosts( $location.path() );
     });
 }]);
 

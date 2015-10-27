@@ -7,17 +7,21 @@ var app = angular.module('ngpress', [], function($locationProvider)
 app.run( ['$rootScope', 'postsService', '$location',
     function($rootScope, postsService, $location)
 {
-    $rootScope.loadPosts = function( filter )
+    $rootScope.loadPosts = function( path )
     {
         $rootScope.$broadcast( 'loadingPosts' );
 
-        $location.path( filter.name );
+        $location.path( path );
 
-        postsService.load(
-            filter,
+        postsService.loadByPath(
+            path,
             function( response )
             {
                 $rootScope.$broadcast( 'postsLoaded', response.data );
+            },
+            function()
+            {
+                $rootScope.$broadcast( 'postsLoadFailed', null );
             }
         );
     };
@@ -29,7 +33,7 @@ app.run( ['$rootScope', 'postsService', '$location',
 
     angular.element(document).ready(function()
     {
-        $rootScope.loadPosts( {name: $location.path()} );
+        $rootScope.loadPosts( $location.path() );
     });
 }]);
 
@@ -45,6 +49,8 @@ String.prototype.capitalizeFirstLetter = function()
         {
             var link = function(scope, element, attrs)
             {
+                scope.posts = [];
+
                 switch( scope.ngpCurrPostAttr )
                 {
                     case 'content':
@@ -74,8 +80,10 @@ String.prototype.capitalizeFirstLetter = function()
             return {
                 link: link,
                 restrict: 'AE',
+                template: '<ol><li ng-repeat="posts"></li></ol>',
                 scope: {
-                    ngpCurrPostAttr: '@'
+                    ngpCurrPostAttr: '@',
+                    config: '@'
                 }
             };
         });
@@ -98,7 +106,7 @@ String.prototype.capitalizeFirstLetter = function()
                 {
                     scope.$emit(
                         'loadPosts',
-                        { name: parser.pathname }
+                        parser.pathname
                     );
 
                     event.preventDefault();
@@ -128,6 +136,11 @@ String.prototype.capitalizeFirstLetter = function()
                 });
 
                 scope.$on( scope.type+'Loaded', function()
+                {
+                    scope.loading = false;
+                });
+
+                scope.$on( scope.type+'LoadFailed', function()
                 {
                     scope.loading = false;
                 });
@@ -161,11 +174,13 @@ require('./directives/loader');
     angular.module('ngpress').factory('postsService',
         ['$http', function ($http)
         {
-            const URL = WP_API_Settings.root + '/posts';
+            const WP_API_URL = '/wp-json/wp/v2/posts';
+
+            const NGP_API_URL = '/wp-json/ngpress/v1/url-to-content';
 
             return {
 
-                load: function( filter, callback )
+                loadByParams: function( filter, callback, failure )
                 {
                     filter['type'] = 'type' in filter ? filter['type'] : 'any';
 
@@ -176,7 +191,16 @@ require('./directives/loader');
                         config.params['filter['+key+']'] = value;
                     });
 
-                    $http.get( URL, config ).then( callback );
+                    $http.get( WP_API_URL, config ).then( callback, failure );
+                },
+
+                loadByPath: function( path, callback, failure )
+                {
+                    var config = {
+                        params: { path: path }
+                    };
+
+                    $http.get( NGP_API_URL, config ).then( callback, failure );
                 }
             }
         }]);

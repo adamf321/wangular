@@ -19,8 +19,10 @@ class Main
         add_action( 'wp_enqueue_scripts', array(__CLASS__, 'enqueue_scripts') );
         add_action( 'after_setup_theme', array(__CLASS__, 'register_menu') );
 
-        add_filter( 'rest_url', array(__CLASS__, 'rest_url') );
+//        add_filter( 'rest_url', array(__CLASS__, 'rest_url') );
         add_filter( 'rest_post_query', array(__CLASS__, 'rest_post_query'), 10, 2 );
+
+        add_action( 'rest_api_init', array(__CLASS__, 'register_endpoints') );
     }
 
     public static function rest_url( $url )
@@ -38,6 +40,15 @@ class Main
         }
 
         return $args;
+    }
+
+    public static function register_endpoints()
+    {
+        include_once( 'endpoints/Url_To_Content.php' );
+
+        $controller = new Endpoints\Url_To_Content( 'post' );
+
+        $controller->register_routes();
     }
 
     public static function enqueue_scripts()

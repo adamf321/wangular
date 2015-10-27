@@ -15,7 +15,7 @@
                 {
                     scope.$emit(
                         'loadPosts',
-                        { name: parser.pathname }
+                        parser.pathname
                     );
 
                     event.preventDefault();

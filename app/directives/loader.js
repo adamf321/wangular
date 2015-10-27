@@ -16,6 +16,11 @@
                 {
                     scope.loading = false;
                 });
+
+                scope.$on( scope.type+'LoadFailed', function()
+                {
+                    scope.loading = false;
+                });
             };
 
             return {
