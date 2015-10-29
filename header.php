@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 
-<html <?php language_attributes(); ?> class="no-js" ng-app="ngpress">
+<html <?php language_attributes(); ?> class="no-js" ng-app="ngPress">
 
 	<head>
 		<meta charset="<?php bloginfo( 'charset' ); ?>">
