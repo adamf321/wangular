@@ -1,6 +1,6 @@
 (function ()
 {
-    angular.module('ngpress').directive('ngpPostsList',
+    angular.module('ngPress').directive('ngpPostsList',
         ['$compile', 'templatesService', function($compile, templatesService)
         {
             var link = function(scope, element, attrs)

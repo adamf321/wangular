@@ -1,6 +1,6 @@
 (function ()
 {
-    angular.module('ngpress').directive('ngpCurrPostAttr',
+    angular.module('ngPress').directive('ngpCurrPostAttr',
         function()
         {
             var link = function(scope, element, attrs)

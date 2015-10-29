@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var app = angular.module('ngpress', ['ngSanitize'], function($locationProvider)
+var app = angular.module('ngPress', ['ngSanitize'], function($locationProvider)
 {
     $locationProvider.html5Mode(true);
 });
@@ -44,7 +44,7 @@ String.prototype.capitalizeFirstLetter = function()
 },{}],2:[function(require,module,exports){
 (function ()
 {
-    angular.module('ngpress').directive('ngpCurrPostAttr',
+    angular.module('ngPress').directive('ngpCurrPostAttr',
         function()
         {
             var link = function(scope, element, attrs)
@@ -87,7 +87,7 @@ String.prototype.capitalizeFirstLetter = function()
 },{}],3:[function(require,module,exports){
 (function ()
 {
-    angular.module('ngpress').directive('a',
+    angular.module('ngPress').directive('a',
         ['postsService', '$location', function (postsService, $location)
     {
         var link = function(scope, element, attrs)
@@ -119,7 +119,7 @@ String.prototype.capitalizeFirstLetter = function()
 },{}],4:[function(require,module,exports){
 (function ()
 {
-    angular.module('ngpress').directive('ngpLoader',
+    angular.module('ngPress').directive('ngpLoader',
         [function ()
         {
             var link = function(scope, element, attrs)
@@ -156,7 +156,7 @@ String.prototype.capitalizeFirstLetter = function()
 },{}],5:[function(require,module,exports){
 (function ()
 {
-    angular.module('ngpress').directive('ngpPostsList',
+    angular.module('ngPress').directive('ngpPostsList',
         ['$compile', 'templatesService', function($compile, templatesService)
         {
             var link = function(scope, element, attrs)
@@ -212,7 +212,7 @@ require('./directives/posts-list');
 },{"./app":1,"./directives/curr-post-attr":2,"./directives/links":3,"./directives/loader":4,"./directives/posts-list":5,"./services/posts":7,"./services/templates":8}],7:[function(require,module,exports){
 (function()
 {
-    angular.module('ngpress').factory('postsService',
+    angular.module('ngPress').factory('postsService',
         ['$http', function ($http)
         {
             const WP_API_URL = '/wp-json/wp/v2/posts';
@@ -249,7 +249,7 @@ require('./directives/posts-list');
 },{}],8:[function(require,module,exports){
 (function()
 {
-    angular.module('ngpress').factory('templatesService',
+    angular.module('ngPress').factory('templatesService',
         ['$http', function ($http)
         {
             const API_URL = '/wp-json/ngpress/v1/templates';

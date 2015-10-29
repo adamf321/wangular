@@ -1,6 +1,6 @@
 (function ()
 {
-    angular.module('ngpress').directive('ngpLoader',
+    angular.module('ngPress').directive('ngpLoader',
         [function ()
         {
             var link = function(scope, element, attrs)

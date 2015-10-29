@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('ngpress').factory('templatesService',
+    angular.module('ngPress').factory('templatesService',
         ['$http', function ($http)
         {
             const API_URL = '/wp-json/ngpress/v1/templates';

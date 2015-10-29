@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('ngpress').factory('postsService',
+    angular.module('ngPress').factory('postsService',
         ['$http', function ($http)
         {
             const WP_API_URL = '/wp-json/wp/v2/posts';

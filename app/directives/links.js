@@ -1,6 +1,6 @@
 (function ()
 {
-    angular.module('ngpress').directive('a',
+    angular.module('ngPress').directive('a',
         ['postsService', '$location', function (postsService, $location)
     {
         var link = function(scope, element, attrs)
