@@ -1,1 +1,2 @@
-var angular = require('./angular');
+require('./angular');
+require('./angular-sanitize');

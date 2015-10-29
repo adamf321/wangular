@@ -5,6 +5,13 @@ namespace ngPress\Modules\Endpoints;
 
 class Url_To_Content extends \WP_REST_Posts_Controller
 {
+    public static function init()
+    {
+        $controller = new Url_To_Content( 'post' );
+
+        $controller->register_routes();
+    }
+
     /**
      * Register the routes for the objects of the controller.
      */
@@ -67,11 +74,11 @@ class Url_To_Content extends \WP_REST_Posts_Controller
 
         foreach( $posts as $post )
         {
-            if( !$this->check_read_permission($post) )
-                continue;
-
             if( is_array($post) )
                 $post = get_post( $post['ID'] );
+
+            if( !$this->check_read_permission($post) )
+                continue;
 
             $item_data = $this->prepare_item_for_response( $post, $request );
 

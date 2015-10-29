@@ -1,4 +1,4 @@
-var app = angular.module('ngpress', [], function($locationProvider)
+var app = angular.module('ngpress', ['ngSanitize'], function($locationProvider)
 {
     $locationProvider.html5Mode(true);
 });

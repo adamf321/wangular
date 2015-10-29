@@ -44,11 +44,14 @@ class Main
 
     public static function register_endpoints()
     {
-        include_once( 'endpoints/Url_To_Content.php' );
+        foreach( glob(dirname(__FILE__)."/endpoints/*.php") as $filename )
+        {
+            include_once( $filename );
 
-        $controller = new Endpoints\Url_To_Content( 'post' );
+            $module_name = basename( $filename, '.php' );
 
-        $controller->register_routes();
+            call_user_func( __NAMESPACE__ . "\\Endpoints\\$module_name::init" );
+        }
     }
 
     public static function enqueue_scripts()

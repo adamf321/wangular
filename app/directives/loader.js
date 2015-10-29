@@ -7,7 +7,7 @@
             {
                 scope.loading = false;
 
-                scope.$on( 'loading'+ scope.type.capitalizeFirstLetter(), function()
+                scope.$on( 'loading'+scope.type.capitalizeFirstLetter(), function()
                 {
                     scope.loading = true;
                 });

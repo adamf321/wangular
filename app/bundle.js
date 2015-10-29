@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var app = angular.module('ngpress', [], function($locationProvider)
+var app = angular.module('ngpress', ['ngSanitize'], function($locationProvider)
 {
     $locationProvider.html5Mode(true);
 });
@@ -49,8 +49,6 @@ String.prototype.capitalizeFirstLetter = function()
         {
             var link = function(scope, element, attrs)
             {
-                scope.posts = [];
-
                 switch( scope.ngpCurrPostAttr )
                 {
                     case 'content':
@@ -80,10 +78,8 @@ String.prototype.capitalizeFirstLetter = function()
             return {
                 link: link,
                 restrict: 'AE',
-                template: '<ol><li ng-repeat="posts"></li></ol>',
                 scope: {
-                    ngpCurrPostAttr: '@',
-                    config: '@'
+                    ngpCurrPostAttr: '@'
                 }
             };
         });
@@ -130,7 +126,7 @@ String.prototype.capitalizeFirstLetter = function()
             {
                 scope.loading = false;
 
-                scope.$on( 'loading'+ scope.type.capitalizeFirstLetter(), function()
+                scope.$on( 'loading'+scope.type.capitalizeFirstLetter(), function()
                 {
                     scope.loading = true;
                 });
@@ -158,17 +154,62 @@ String.prototype.capitalizeFirstLetter = function()
         }]);
 }());
 },{}],5:[function(require,module,exports){
+(function ()
+{
+    angular.module('ngpress').directive('ngpPostsList',
+        ['$compile', 'templatesService', function($compile, templatesService)
+        {
+            var link = function(scope, element, attrs)
+            {
+                scope.posts = [];
+
+                scope.templateSlug = scope.templateSlug ? scope.templateSlug : 'templates/posts-list';
+
+                templatesService.get(
+                    scope.templateSlug,
+                    function( response )
+                    {
+                        element.html( response.data );
+
+                        $compile( element.contents() )(scope);
+                    }
+                );
+
+                scope.$on(
+                    'postsLoaded',
+                    function( event, posts )
+                    {
+                        scope.posts = posts;
+                    }
+                );
+
+            };
+
+            return {
+                link: link,
+                restrict: 'E',
+                replace: true,
+                template: '<div class="posts-list"></div>',
+                scope: {
+                    templateSlug: '@'
+                }
+            };
+        }]);
+}());
+},{}],6:[function(require,module,exports){
 //App
 require('./app');
 
 //Services
 require('./services/posts');
+require('./services/templates');
 
 //Directives
 require('./directives/links');
 require('./directives/curr-post-attr');
 require('./directives/loader');
-},{"./app":1,"./directives/curr-post-attr":2,"./directives/links":3,"./directives/loader":4,"./services/posts":6}],6:[function(require,module,exports){
+require('./directives/posts-list');
+},{"./app":1,"./directives/curr-post-attr":2,"./directives/links":3,"./directives/loader":4,"./directives/posts-list":5,"./services/posts":7,"./services/templates":8}],7:[function(require,module,exports){
 (function()
 {
     angular.module('ngpress').factory('postsService',
@@ -205,4 +246,25 @@ require('./directives/loader');
             }
         }]);
 }());
-},{}]},{},[5]);
+},{}],8:[function(require,module,exports){
+(function()
+{
+    angular.module('ngpress').factory('templatesService',
+        ['$http', function ($http)
+        {
+            const API_URL = '/wp-json/ngpress/v1/templates';
+
+            return {
+
+                get: function( templateSlug, callback, failure )
+                {
+                    var config = {
+                        params: { templateSlug: templateSlug }
+                    };
+
+                    $http.get( API_URL, config ).then( callback, failure );
+                }
+            }
+        }]);
+}());
+},{}]},{},[6]);
