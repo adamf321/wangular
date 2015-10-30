@@ -1,7 +1,7 @@
-var app = angular.module('ngPress', ['ngSanitize'], function($locationProvider)
+var app = angular.module('ngPress', ['ngSanitize'], ['$locationProvider', function($locationProvider)
 {
     $locationProvider.html5Mode(true);
-});
+}]);
 
 app.run( ['$rootScope', 'postsService', '$location',
     function($rootScope, postsService, $location)

@@ -1,8 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var app = angular.module('ngPress', ['ngSanitize'], function($locationProvider)
+var app = angular.module('ngPress', ['ngSanitize'], ['$locationProvider', function($locationProvider)
 {
     $locationProvider.html5Mode(true);
-});
+}]);
 
 app.run( ['$rootScope', 'postsService', '$location',
     function($rootScope, postsService, $location)
@@ -83,7 +83,7 @@ app.run( ['$rootScope', 'postsService', '$location',
 (function ()
 {
     angular.module('ngPress').directive('a',
-        ['postsService', '$location', function (postsService, $location)
+        ['$location', function ($location)
     {
         var link = function(scope, element, attrs)
         {
@@ -95,10 +95,7 @@ app.run( ['$rootScope', 'postsService', '$location',
             {
                 element.on('click', function( event )
                 {
-                    scope.$emit(
-                        'loadPosts',
-                        parser.pathname
-                    );
+                    scope.$emit( 'loadPosts', parser.pathname );
 
                     event.preventDefault();
                 });

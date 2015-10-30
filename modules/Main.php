@@ -56,22 +56,24 @@ class Main
 
     public static function enqueue_scripts()
     {
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
         //Styles
         wp_enqueue_style(
             'bootstrap',
-            get_template_directory_uri() . '/bower_components/bootstrap/dist/css/bootstrap.min.css'
+            get_template_directory_uri() . "/bower_components/bootstrap/dist/css/bootstrap{$suffix}.css"
         );
 
         wp_enqueue_style(
             'ngpress-style',
-            get_template_directory_uri() . '/styles/ngpress.css',
+            get_template_directory_uri() . "/styles/ngpress{$suffix}.css",
             array( 'bootstrap' )
         );
 
         //Lib
         wp_enqueue_script(
             'ngpress-lib',
-            get_template_directory_uri() . '/bower_components/bundle.js',
+            get_template_directory_uri() . "/bower_components/bundle{$suffix}.js",
             array( 'jquery' ),
             null,
             true
@@ -80,7 +82,7 @@ class Main
         //App
         wp_enqueue_script(
             'ngpress-app',
-            get_template_directory_uri() . '/app/bundle.js',
+            get_template_directory_uri() . "/app/bundle{$suffix}.js",
             array( 'ngpress-lib', 'wp-api' ),
             null,
             true
