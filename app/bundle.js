@@ -9,7 +9,7 @@ app.run( ['$rootScope', 'postsService', '$location',
 {
     $rootScope.loadPosts = function( path )
     {
-        $rootScope.$broadcast( 'loadingPosts' );
+        $rootScope.$broadcast( 'postsLoading' );
 
         $location.path( path );
 
@@ -36,11 +36,6 @@ app.run( ['$rootScope', 'postsService', '$location',
         $rootScope.loadPosts( $location.path() );
     });
 }]);
-
-String.prototype.capitalizeFirstLetter = function()
-{
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
 },{}],2:[function(require,module,exports){
 (function ()
 {
@@ -126,7 +121,7 @@ String.prototype.capitalizeFirstLetter = function()
             {
                 scope.loading = false;
 
-                scope.$on( 'loading'+scope.type.capitalizeFirstLetter(), function()
+                scope.$on( scope.type+'Loading', function()
                 {
                     scope.loading = true;
                 });

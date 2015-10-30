@@ -8,7 +8,7 @@ app.run( ['$rootScope', 'postsService', '$location',
 {
     $rootScope.loadPosts = function( path )
     {
-        $rootScope.$broadcast( 'loadingPosts' );
+        $rootScope.$broadcast( 'postsLoading' );
 
         $location.path( path );
 
@@ -35,8 +35,3 @@ app.run( ['$rootScope', 'postsService', '$location',
         $rootScope.loadPosts( $location.path() );
     });
 }]);
-
-String.prototype.capitalizeFirstLetter = function()
-{
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
