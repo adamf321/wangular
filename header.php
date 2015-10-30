@@ -21,4 +21,4 @@
 
 	<body <?php body_class(); ?>>
 
-		<?php get_template_part( 'ng/header' ) ?>
+		<?php get_template_part( 'templates/header' ) ?>
