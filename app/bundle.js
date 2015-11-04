@@ -25,11 +25,11 @@ app.run( ['$rootScope', 'postsService', '$location',
             {
                 $rootScope.current = response.data;
 
-                $rootScope.$broadcast( 'postsLoaded', response.data );
+                $rootScope.$broadcast( 'postsLoaded' );
             },
             function()
             {
-                $rootScope.$broadcast( 'postsLoadFailed', null );
+                $rootScope.$broadcast( 'postsLoadFailed' );
             }
         );
     };
@@ -161,14 +161,12 @@ app.run( ['$rootScope', 'postsService', '$location',
         {
             var link = function(scope, element, attrs)
             {
-                scope.posts = [];
-
-                scope.$on(
-                    'postsLoaded',
-                    function( event, data )
+                scope.$watch(
+                    'current.template',
+                    function( template )
                     {
                         templatesService.get(
-                           data.template,
+									template,
                            function( response )
                            {
                                element.html( response.data );
@@ -176,8 +174,6 @@ app.run( ['$rootScope', 'postsService', '$location',
                                $compile( element.contents() )(scope);
                            }
                         );
-
-                        scope.posts = data.posts;
                     }
                 );
 
@@ -187,8 +183,7 @@ app.run( ['$rootScope', 'postsService', '$location',
                 link: link,
                 restrict: 'E',
                 replace: true,
-                template: '<div class="posts-list"></div>',
-                scope: {}
+                template: '<div class="posts-list"></div>'
             };
         }]);
 }());

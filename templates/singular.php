@@ -1,4 +1,4 @@
-<div ng-repeat="post in posts" class="post-{{post.id}}">
+<div ng-repeat="post in current.posts" class="post-{{post.id}}">
 
 	<h1>{{post.title.rendered}}</h1>
 

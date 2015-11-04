@@ -24,11 +24,11 @@ app.run( ['$rootScope', 'postsService', '$location',
             {
                 $rootScope.current = response.data;
 
-                $rootScope.$broadcast( 'postsLoaded', response.data );
+                $rootScope.$broadcast( 'postsLoaded' );
             },
             function()
             {
-                $rootScope.$broadcast( 'postsLoadFailed', null );
+                $rootScope.$broadcast( 'postsLoadFailed' );
             }
         );
     };

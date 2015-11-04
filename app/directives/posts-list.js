@@ -5,14 +5,12 @@
         {
             var link = function(scope, element, attrs)
             {
-                scope.posts = [];
-
-                scope.$on(
-                    'postsLoaded',
-                    function( event, data )
+                scope.$watch(
+                    'current.template',
+                    function( template )
                     {
                         templatesService.get(
-                           data.template,
+									template,
                            function( response )
                            {
                                element.html( response.data );
@@ -20,8 +18,6 @@
                                $compile( element.contents() )(scope);
                            }
                         );
-
-                        scope.posts = data.posts;
                     }
                 );
 
@@ -31,8 +27,7 @@
                 link: link,
                 restrict: 'E',
                 replace: true,
-                template: '<div class="posts-list"></div>',
-                scope: {}
+                template: '<div class="posts-list"></div>'
             };
         }]);
 }());
