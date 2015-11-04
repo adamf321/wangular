@@ -10,7 +10,8 @@
                 get: function( templateSlug, callback, failure )
                 {
                     var config = {
-                        params: { templateSlug: templateSlug }
+                        params: { templateSlug: templateSlug },
+                        cache:  true
                     };
 
                     $http.get( API_URL, config ).then( callback, failure );

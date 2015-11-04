@@ -39,7 +39,7 @@ class Url_To_Content extends \WP_REST_Posts_Controller
      */
     public function get_items( $request )
     {
-        $data = array();
+        $data = array( 'posts' => array(), 'template' => '' );
 
         $posts = array();
 
@@ -51,6 +51,8 @@ class Url_To_Content extends \WP_REST_Posts_Controller
         {
             //A single post/page
             $posts = array( get_post($post_id) );
+
+            $data['template'] = 'templates/singular';
         }
         elseif( rtrim( get_home_url(), '/' ) == rtrim( get_home_url(null, $path), '/' ) )
         {
@@ -59,11 +61,15 @@ class Url_To_Content extends \WP_REST_Posts_Controller
             {
                 //Static
                 $posts = array( get_post(get_option('page_on_front')) );
+
+				$data['template'] = 'templates/singular';
             }
             else
             {
                 //Latest posts
                 $posts = wp_get_recent_posts( apply_filters( 'ngp_homepage_recent_posts_args', array() ) );
+
+				$data['template'] = 'templates/archive';
             }
         }
         else
@@ -82,7 +88,7 @@ class Url_To_Content extends \WP_REST_Posts_Controller
 
             $item_data = $this->prepare_item_for_response( $post, $request );
 
-            $data[] = $this->prepare_response_for_collection( $item_data );
+            $data['posts'][] = $this->prepare_response_for_collection( $item_data );
         }
 
         $response = rest_ensure_response( $data );

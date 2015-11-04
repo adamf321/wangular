@@ -1,7 +1,7 @@
 (function ()
 {
     angular.module('ngPress').directive('a',
-        ['postsService', '$location', function (postsService, $location)
+        ['$location', function ($location)
     {
         var link = function(scope, element, attrs)
         {
@@ -13,10 +13,7 @@
             {
                 element.on('click', function( event )
                 {
-                    scope.$emit(
-                        'loadPosts',
-                        parser.pathname
-                    );
+                    scope.$emit( 'loadPosts', parser.pathname );
 
                     event.preventDefault();
                 });

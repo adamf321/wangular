@@ -7,23 +7,21 @@
             {
                 scope.posts = [];
 
-                scope.templateSlug = scope.templateSlug ? scope.templateSlug : 'templates/posts-list';
-
-                templatesService.get(
-                    scope.templateSlug,
-                    function( response )
-                    {
-                        element.html( response.data );
-
-                        $compile( element.contents() )(scope);
-                    }
-                );
-
                 scope.$on(
                     'postsLoaded',
-                    function( event, posts )
+                    function( event, data )
                     {
-                        scope.posts = posts;
+                        templatesService.get(
+                           data.template,
+                           function( response )
+                           {
+                               element.html( response.data );
+
+                               $compile( element.contents() )(scope);
+                           }
+                        );
+
+                        scope.posts = data.posts;
                     }
                 );
 
@@ -34,9 +32,7 @@
                 restrict: 'E',
                 replace: true,
                 template: '<div class="posts-list"></div>',
-                scope: {
-                    templateSlug: '@'
-                }
+                scope: {}
             };
         }]);
 }());

@@ -155,23 +155,21 @@ app.run( ['$rootScope', 'postsService', '$location',
             {
                 scope.posts = [];
 
-                scope.templateSlug = scope.templateSlug ? scope.templateSlug : 'templates/posts-list';
-
-                templatesService.get(
-                    scope.templateSlug,
-                    function( response )
-                    {
-                        element.html( response.data );
-
-                        $compile( element.contents() )(scope);
-                    }
-                );
-
                 scope.$on(
                     'postsLoaded',
-                    function( event, posts )
+                    function( event, data )
                     {
-                        scope.posts = posts;
+                        templatesService.get(
+                           data.template,
+                           function( response )
+                           {
+                               element.html( response.data );
+
+                               $compile( element.contents() )(scope);
+                           }
+                        );
+
+                        scope.posts = data.posts;
                     }
                 );
 
@@ -182,9 +180,7 @@ app.run( ['$rootScope', 'postsService', '$location',
                 restrict: 'E',
                 replace: true,
                 template: '<div class="posts-list"></div>',
-                scope: {
-                    templateSlug: '@'
-                }
+                scope: {}
             };
         }]);
 }());
@@ -251,7 +247,8 @@ require('./directives/posts-list');
                 get: function( templateSlug, callback, failure )
                 {
                     var config = {
-                        params: { templateSlug: templateSlug }
+                        params: { templateSlug: templateSlug },
+                        cache:  true
                     };
 
                     $http.get( API_URL, config ).then( callback, failure );
