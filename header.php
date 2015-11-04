@@ -16,6 +16,8 @@
 
 		<base href="/">
 
+		<title>{{current.siteTitle}}</title>
+
 		<?php wp_head(); ?>
 	</head>
 

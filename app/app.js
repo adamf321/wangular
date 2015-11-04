@@ -6,6 +6,12 @@ var app = angular.module('ngPress', ['ngSanitize'], ['$locationProvider', functi
 app.run( ['$rootScope', 'postsService', '$location',
     function($rootScope, postsService, $location)
 {
+    $rootScope.current = {
+        siteTitle:  '',
+        template:   '',
+        posts:      []
+    };
+
     $rootScope.loadPosts = function( path )
     {
         $rootScope.$broadcast( 'postsLoading' );
@@ -16,6 +22,8 @@ app.run( ['$rootScope', 'postsService', '$location',
             path,
             function( response )
             {
+                $rootScope.current = response.data;
+
                 $rootScope.$broadcast( 'postsLoaded', response.data );
             },
             function()

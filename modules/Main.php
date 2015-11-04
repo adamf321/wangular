@@ -9,15 +9,20 @@ class Main
 
     public static function init()
     {
-        //Init modules
+        // Init modules
         foreach( glob(dirname(__FILE__)."/*.php") as $filename )
         {
             include_once( $filename );
         }
 
-        //Hooks
+        // Hooks
         add_action( 'wp_enqueue_scripts', array(__CLASS__, 'enqueue_scripts') );
-        add_action( 'after_setup_theme', array(__CLASS__, 'register_menu') );
+        add_action( 'after_setup_theme', array(__CLASS__, 'after_setup_theme') );
+
+        // TODO: figure out how to get these changing as new posts are loaded via AJAX.
+        remove_action( 'wp_head', 'rel_canonical' );
+        remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+        remove_action( 'wp_head', 'feed_links_extra', 3 );
 
 //        add_filter( 'rest_url', array(__CLASS__, 'rest_url') );
         add_filter( 'rest_post_query', array(__CLASS__, 'rest_post_query'), 10, 2 );
@@ -89,7 +94,7 @@ class Main
         );
     }
 
-    public static function register_menu()
+    public static function after_setup_theme()
     {
         register_nav_menu( 'primary-menu', __('Primary Menu') );
     }

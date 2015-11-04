@@ -39,7 +39,7 @@ class Url_To_Content extends \WP_REST_Posts_Controller
      */
     public function get_items( $request )
     {
-        $data = array( 'posts' => array(), 'template' => '' );
+        $data = array( 'posts' => array(), 'template' => '', 'siteTitle' => '' );
 
         $posts = array();
 
@@ -53,6 +53,8 @@ class Url_To_Content extends \WP_REST_Posts_Controller
             $posts = array( get_post($post_id) );
 
             $data['template'] = 'templates/singular';
+
+			$data['siteTitle'] = $posts[0]->post_title . ' | ' . get_bloginfo( 'name' );
         }
         elseif( rtrim( get_home_url(), '/' ) == rtrim( get_home_url(null, $path), '/' ) )
         {
@@ -71,6 +73,8 @@ class Url_To_Content extends \WP_REST_Posts_Controller
 
 				$data['template'] = 'templates/archive';
             }
+
+			$data['siteTitle'] = get_bloginfo( 'name' ) . ' | ' . get_bloginfo( 'description' );
         }
         else
         {
